@@ -29,14 +29,9 @@ function close() {
 // write a message into main
 function message(e) {
   let msg = JSON.parse(e.data)
-  main.innerHTML += `<p><code>${JSON.stringify(msg, null, 2)}</code></p>`
-}
+  let number = JSON.stringify(msg.countess)
+  let count = parseInt(number)
+  console.log(typeof count)
 
-// sends messages to the lambda
-msg.addEventListener('keyup', function(e) {
-  if (e.key == 'Enter') {
-    let text = e.target.value // get the text
-    e.target.value = ''       // clear the text
-    ws.send(JSON.stringify({text}))
-  }
-})
+  main.innerHTML = `<img src='/_static/cagepng.png' style='width:${count}00px'>`
+}

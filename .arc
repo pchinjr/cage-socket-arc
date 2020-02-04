@@ -1,8 +1,9 @@
 @app
-paulsocket
+cage-socket-arc
+
+@cdn
 
 @ws
-# no more config
 
 @static
 folder public
