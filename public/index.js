@@ -16,6 +16,7 @@ ws.onerror = console.log
 
 // connect to the WebSocket
 function open() {
+  ws.send(JSON.stringify({text: 'ping'}))
   let ts = new Date(Date.now()).toISOString()
   main.innerHTML = `<p><b><code>${ts} - opened</code></b></p>`
 }
@@ -28,7 +29,7 @@ function close() {
 // write a message into main
 function message(e) {
   let msg = JSON.parse(e.data)
-  main.innerHTML += `<p><code>${msg.message.text}</code></p>`
+  main.innerHTML += `<p><code>${JSON.stringify(msg, null, 2)}</code></p>`
 }
 
 // sends messages to the lambda

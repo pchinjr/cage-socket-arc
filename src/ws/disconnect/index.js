@@ -20,7 +20,39 @@ exports.handler = async function connected(event) {
     
     // increment the count
     let value =  await data.decr({table, key, prop})
-    console.log('value here', value)
+    let connected = await data.get({table: 'connected'})
+
+    await Promise.all(connected.map(c=> {
+      return new Promise((res, rej)=> {
+        // callback style
+        arc.ws.send({
+          id: c.key, 
+          payload: value
+        },
+        function errback(err) {
+          if (err) {
+            console.log('swallowing promise error', e)
+          }
+          res()
+        })
+        /**
+         * promise style
+        try {
+          !async function iiafe() {
+            await arc.ws.send({
+              id: c.key, 
+              payload: value
+            })
+          }()
+        }
+        catch(e) {
+          console.log('swallowing promise error', e)
+        }
+        res()*/
+      }) 
+    }))
+
+
   }
   catch(e) {
     console.log('FAIL', e) 

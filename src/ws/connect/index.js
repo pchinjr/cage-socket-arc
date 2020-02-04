@@ -3,7 +3,7 @@ let arc = require('@architect/functions')
 
 exports.handler = async function connected(event) {
 
-  let id = event.requestContext.connectionId
+  let connectionID = event.requestContext.connectionId
   let payload = {ok: true, ts: Date.now()}
   
   let table = 'connections'
@@ -13,20 +13,21 @@ exports.handler = async function connected(event) {
   try {
 
     let counter = await data.get({table, key})
-    console.log('init counter value', counter)
-
     if (!counter) {
-      console.log('initial row')
       await data.set({
         table,
         key,
         countess: 0
       })
     }
+
+    await data.set({
+      table: 'connected',
+      key: connectionID, 
+    })
     
     // increment the count
-    let value =  await data.incr({table, key, prop})
-    console.log('value here', value)
+    let value = await data.incr({table, key, prop})
   }
   catch(e) {
     console.log('FAIL', e) 
