@@ -7,6 +7,7 @@ cage-socket-arc
 
 @static
 folder public
+fingerprint true
 
 @http
 get /
