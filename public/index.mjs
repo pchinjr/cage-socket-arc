@@ -1,5 +1,3 @@
-// public/index.mjs
-
 // get the WebSocket url from the backend
 let url = window.WS_URL
 
@@ -32,7 +30,7 @@ function insertFaces(connected) {
 // use connectionIDs to render a face image element with connectionID
 function renderFace(props) {
   return `
-  <img src="/_static/cagepng.png" id=${props.key} class="face" style="transform:rotate(${props.direction}deg)" />
+  <img src="/_static/cagepng.png" id=${props.key} class="face" style="transform: rotate(${props.direction}deg)"/>
   `
 }
 
@@ -60,16 +58,19 @@ function close() {
 function message(e) {
   // capture event "action"
   let action = JSON.parse(e.data).action
-
+  
+  // receive server action and update the client
   if(action === 'connected'||'disconnect') {
     init()
   }
   
+  // receive server action and update the client
   if(action === 'rotate') {
     console.log(e)
     let turnId = JSON.parse(e.data).key
     let face = document.getElementById(turnId)
-    face.setAttribute('style', `transform: rotate(90deg)`)
+    let direction = JSON.parse(e.data).direction
+    face.setAttribute('style', `transform: rotate(${direction}deg)`)
   }
 }
 

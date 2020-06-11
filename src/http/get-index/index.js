@@ -2,9 +2,7 @@ let arc = require('@architect/functions')
 let static = arc.http.helpers.static
 let getURL = require('./get-web-socket-url')
 
-/**
- * renders the html app chrome
- */
+// renders HTML string with clientside js bundle
 exports.handler = async function http(req) {
   return {
     headers: {'content-type': 'text/html; charset=utf8'},

@@ -7,15 +7,19 @@ exports.handler = async function connected(event) {
   // remove connectionId from database
   await data.destroy({table: 'connected', key: id})
   console.log('connectionID deleted')
-
+  
+  
   try {
+    // get current state after disconnection
     let connected = await data.get({table: 'connected'})
+    // send new state to all connected clients
     await Promise.all(connected.map(c=> {
       return new Promise((res, rej)=> {
+        // the client is listening for this payload to update the DOM
         let payload = {
           action: 'disconnect'
         }
-        // callback style
+        // callback style of promise
         arc.ws.send({
           id: c.key, 
           payload: payload
