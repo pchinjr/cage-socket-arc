@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Exported by architect/package@1.3.3 on 2020-06-09T23:36:00.406Z
+Description: Exported by architect/package@1.3.3 on 2020-06-10T22:08:35.349Z
 Resources:
   CageSocketArc:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: production
+      StageName: staging
       DefinitionBody:
         openapi: 3.0.1
         info:
@@ -82,7 +82,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/a61348f6ad0d77b9caaf47ae81fe62a4
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/6cd22b9543a58807ec5eb03aa799cc4a
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -94,13 +94,13 @@ Resources:
             Ref: AWS::StackName
           ARC_APP_NAME: cage-socket-arc
           ARC_HTTP: aws_proxy
-          NODE_ENV: production
+          NODE_ENV: staging
           SESSION_TABLE_NAME: jwe
           ARC_STATIC_BUCKET:
             Ref: StaticBucket
           ARC_WSS_URL:
             Fn::Sub:
-            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/production
+            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging
             - {}
       Role:
         Fn::Sub:
@@ -130,7 +130,7 @@ Resources:
   WS:
     Type: AWS::ApiGatewayV2::Api
     Properties:
-      Name: CageSocketArcWebsocketProduction
+      Name: CageSocketArcWebsocketStaging
       ProtocolType: WEBSOCKET
       RouteSelectionExpression: $request.body.message
   WebsocketDeployment:
@@ -145,7 +145,7 @@ Resources:
   WebsocketStage:
     Type: AWS::ApiGatewayV2::Stage
     Properties:
-      StageName: production
+      StageName: staging
       DeploymentId:
         Ref: WebsocketDeployment
       ApiId:
@@ -172,7 +172,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/36bbca5ffc78da4ec1b1d26d4ae2a501
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/3827060cbdef91279939a76fbc7164b8
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -184,13 +184,13 @@ Resources:
             Ref: AWS::StackName
           ARC_APP_NAME: cage-socket-arc
           ARC_HTTP: aws_proxy
-          NODE_ENV: production
+          NODE_ENV: staging
           SESSION_TABLE_NAME: jwe
           ARC_STATIC_BUCKET:
             Ref: StaticBucket
           ARC_WSS_URL:
             Fn::Sub:
-            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/production
+            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging
             - {}
       Role:
         Fn::Sub:
@@ -234,7 +234,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/892d05777a730f1217611486d8082978
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/3b340b7131a83a5b3453b50836cdb4d3
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -246,13 +246,13 @@ Resources:
             Ref: AWS::StackName
           ARC_APP_NAME: cage-socket-arc
           ARC_HTTP: aws_proxy
-          NODE_ENV: production
+          NODE_ENV: staging
           SESSION_TABLE_NAME: jwe
           ARC_STATIC_BUCKET:
             Ref: StaticBucket
           ARC_WSS_URL:
             Fn::Sub:
-            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/production
+            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging
             - {}
       Role:
         Fn::Sub:
@@ -296,7 +296,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/396756b0103791e763fc829136c83336
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/3e5dff9f37f84680d7c028e9ede78790
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -308,13 +308,13 @@ Resources:
             Ref: AWS::StackName
           ARC_APP_NAME: cage-socket-arc
           ARC_HTTP: aws_proxy
-          NODE_ENV: production
+          NODE_ENV: staging
           SESSION_TABLE_NAME: jwe
           ARC_STATIC_BUCKET:
             Ref: StaticBucket
           ARC_WSS_URL:
             Fn::Sub:
-            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/production
+            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging
             - {}
       Role:
         Fn::Sub:
@@ -475,7 +475,7 @@ Resources:
         Fn::Sub:
         - /${AWS::StackName}/static/${key}
         - key: fingerprint
-      Value: 'false'
+      Value: 'true'
   ParameterStorePolicy:
     Type: AWS::IAM::Policy
     DependsOn: Role
@@ -496,7 +496,7 @@ Outputs:
     Description: API Gateway
     Value:
       Fn::Sub:
-      - https://${restApiId}.execute-api.${AWS::Region}.amazonaws.com/production
+      - https://${restApiId}.execute-api.${AWS::Region}.amazonaws.com/staging
       - restApiId:
           Ref: CageSocketArc
   restApiId:
@@ -507,7 +507,7 @@ Outputs:
     Description: Websocket Endpoint
     Value:
       Fn::Sub:
-      - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/production
+      - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging
       - {}
   BucketURL:
     Description: Bucket URL

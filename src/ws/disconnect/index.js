@@ -2,32 +2,21 @@ let data = require('@begin/data')
 let arc = require('@architect/functions')
 
 exports.handler = async function connected(event) {
+  let id = event.requestContext.connectionId
+  let message = { "text": "user disconnected"}
 
-  let table = 'connections'
-  let key = 'alltime'
-  let prop = 'countess'
+  let payload = {ok: true, ts: Date.now(), message}
+  await data.destroy({table: 'connected', key: id})
+  console.log('connectionID deleted')
 
   try {
-
-    let counter = await data.get({table, key})
-    if (!counter) {
-      await data.set({
-        table,
-        key,
-        countess: 0
-      })
-    }
-    
-    // increment the count
-    let value =  await data.decr({table, key, prop})
     let connected = await data.get({table: 'connected'})
-
     await Promise.all(connected.map(c=> {
       return new Promise((res, rej)=> {
         // callback style
         arc.ws.send({
           id: c.key, 
-          payload: value
+          payload: payload
         },
         function errback(err) {
           if (err) {
@@ -35,20 +24,6 @@ exports.handler = async function connected(event) {
           }
           res()
         })
-        /**
-         * promise style
-        try {
-          !async function iiafe() {
-            await arc.ws.send({
-              id: c.key, 
-              payload: value
-            })
-          }()
-        }
-        catch(e) {
-          console.log('swallowing promise error', e)
-        }
-        res()*/
       }) 
     }))
 

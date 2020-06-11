@@ -16,12 +16,12 @@ ws.onerror = console.log
 
 // connect to the WebSocket
 function open() {
-  ws.send(JSON.stringify({text: 'ping'}))
   let ts = new Date(Date.now()).toISOString()
   main.innerHTML = `<p><b><code>${ts} - opened</code></b></p>`
+  console.log('open')
 }
 
-// report a closed WebSocket connection
+// report a closed web socket connection
 function close() {
   main.innerHTML = 'Closed <a href=/>reload</a>'
 }
@@ -29,9 +29,17 @@ function close() {
 // write a message into main
 function message(e) {
   let msg = JSON.parse(e.data)
-  let number = JSON.stringify(msg.countess)
-  let count = parseInt(number)
-  console.log(typeof count)
-
-  main.innerHTML = `<img src='/_static/cagepng.png' style='width:${count}00px'>`
+  main.innerHTML += `<p><code>${msg.message.text}</code></p>`
 }
+
+// sends messages to the lambda
+msg.addEventListener('keyup', function(e) {
+  if (e.key == 'Enter') {
+    let text = e.target.value // get the text
+    console.log(e.target.value)
+    console.log(typeof(text))
+    e.target.value = ''       // clear the text
+    //ws.send({text})
+    ws.send(JSON.stringify({text}))
+  }
+})

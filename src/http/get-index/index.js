@@ -1,18 +1,24 @@
+let arc = require('@architect/functions')
+let static = arc.http.helpers.static
+let getURL = require('./get-web-socket-url')
+
+/**
+ * renders the html app chrome
+ */
 exports.handler = async function http(req) {
   return {
-    headers: {
-      'content-type': 'text/html; charset=utf8',
-    },
+    headers: {'content-type': 'text/html; charset=utf8'},
     body: `<!doctype html>
 <html>
 <body>
-<h1>WebSockets</h1>
+<h1>#PraiseCage</h1>
+<h2>We are all connected</h2>
 <main>Loading...</main>
+<input id=message type=text placeholder="Enter message" autofocus>
 <script>
-window.WS_URL = '${process.env.ARC_WSS_URL}'
-window.STATE = {count: 'n/a'}
+window.WS_URL = '${getURL()}'
 </script>
-<script type=module src=/_static/index.js></script>
+<script type=module src=${static('/index.mjs')}></script>
 </body>
 </html>`
   }
