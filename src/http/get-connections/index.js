@@ -1,5 +1,6 @@
 const data = require('@begin/data')
 
+// retreive all connections in the database and return as JSON
 exports.handler = async function connections (req) {
   let connections = await data.get({
     table: 'connected'

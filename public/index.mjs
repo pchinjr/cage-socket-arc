@@ -73,6 +73,7 @@ function message(e) {
   }
 }
 
+// add click handlers and send direction attribute to the database
 leftButton.addEventListener('click', function(e){
   let payload = {
     action: 'rotate',

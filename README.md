@@ -2,15 +2,17 @@
 
 This is an interactive demo of serverless WebSockets using [OpenJS Architect](https://arc.codes), AWS API Gateway, DynamoDB, S3, and Lambda functions. [In December 2018, AWS announced that API Gateway had the ability to create WebSocket connections.](https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/) 
 
-You are given three routes at API Gateway to route to three special Lambda functions.
+API Gateway has three special WebSocket handler routes that invoke a corresponding Lambda function.
  - $connect
  - $disconnect
  - $default
 
-Each message sent has a connectionId and whatever JSON payload you want to send to the Lambda function. Since the Lambda functions are stateless, we can use DynamoDB to persist the connectionId and state of the client. This entire world state is rebroadcast to all connections in the database with it's own attributes.
+Each message sent has a connectionId and a JSON payload sent to a Lambda function. I am using DynamoDB to persist the connectionId and user state because Lambda functions are stateless. The entire app state is either fetched or pushed to all connections over a web socket connection.
 
-To use this example, you will need to have NodeJS, OpenJS Architect, and an AWS account with Admin privileges. [For more information about AWS Credentials check out our docs](https://arc.codes/quickstart#local-credentials-file) Once deployed, your entire infrastructure is code defined by the `.arc` file. Each deploy will be deterministic with a full CloudFormation stack, except the CloudFront CDN, which still has to be deployed with the SDK, but Architect takes care of it. Just be patient as it may take a few minutes to resolve correctly. 
+To use this example, you will need to have NodeJS, [OpenJS Architect](https://arc.codes), and an AWS account with Admin privileges. [For more information about AWS Credentials check out our docs](https://arc.codes/quickstart#local-credentials-file) The entire app infrastructure is defined by the `.arc` file. Each deploy generates a CloudFormation stack. Except the CloudFront CDN, which still has to be deployed with the SDK, but Architect takes care of it. Just be patient as it may take a few minutes to set up on the AWS side. 
 
+
+## clone and install
 Clone this repo and then: 
 ```bash
 npm install
@@ -18,13 +20,15 @@ npm start
 ```
 Then navigate to http://localhost:3333 from a couple different browser tabs and have fun while also Praising Cage! 
 
+## serverless and WebSockets
+
 Things to know about serverless WebSockets and API Gateway:
  - $connect/$disconnect route must return HTTP Status 200 to signal an upgrade from HTTP to WSS. The moment the $connect handler returns 200, you can't do anything else in that function.
  - $default catches everything else. I didn't try custom WebSocket route handlers yet, instead I check for a payload attribute and create responses inside the $default handler.
  - In order to persist the client connections and state of each connection, I write that information into DynamoDB. Then all changes are recorded and rebroadcast to the client.
  - The backend client doesn't use a typical Socket.io client or library, instead AWS requires a special API call to send data back to API Gateway which will route back to the client. Architect provides a helper function, [docs for that are here](https://arc.codes/primitives/ws)
 
-Here's how it works: 
+## Here's how it works
 
 Let's look at the `.arc` file first, because it's the manifest that keeps all deployed assets and code in sync with my git repo.
 ```md
@@ -92,6 +96,7 @@ The disconnect event sends a message to `src/ws/disconnect/index.js`, the $disco
 ## deploying
 When you decide to deploy this code to AWS, run `arc deploy` from the terminal and make note of the WebSocket URL that is printed out in the console.
 
+Example output after deployment is finished:
 ```bash
        App ⌁ cage-socket-arc
       Region ⌁ us-east-1
