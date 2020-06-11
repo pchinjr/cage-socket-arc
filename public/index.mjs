@@ -66,7 +66,6 @@ function message(e) {
   
   // receive server action and update the client
   if(action === 'rotate') {
-    console.log(e)
     let turnId = JSON.parse(e.data).key
     let face = document.getElementById(turnId)
     let direction = JSON.parse(e.data).direction
