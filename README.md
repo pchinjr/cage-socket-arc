@@ -122,7 +122,7 @@ When you decide to deploy this code to AWS, run `arc deploy` from the terminal a
 ✓ Deploy Skipped 1 file (already up to date)
 ✓ Success! Deployed static assets from public/
 ```
-You will need the `WS:` url to update `src/http/get-index/get-websocket-url.js` with the proper WebSocket endpoint for `staging` and `production`.
+You will need the `WS:` url to update `src/http/get-index/get-websocket-url.js` with the proper WebSocket endpoint for `staging` and `production`. You can choose to either hardcode it in this file or set it as an environment variable in `.arc-env`. See `arc-env-example` for how to set the key value pair. Just make sure to rename it to `.arc-env` and don't commit it to GitHub.
 
 To deploy to production, run `arc deploy production`.
 

@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Exported by architect/package@1.3.3 on 2020-06-11T17:55:32.547Z
+Description: Exported by architect/package@1.3.3 on 2020-06-11T18:03:50.171Z
 Resources:
   CageSocketArc:
     Type: AWS::Serverless::Api
@@ -98,7 +98,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/58a54c8ae25d24b1a6814285b1b1a0e9
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/8defbf44bad70663845a87f341ef47ac
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -135,7 +135,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/be737c91b130245649e19243aef12c13
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/85309662837272be424cad776a0219c9
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -225,7 +225,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/bfbab600cdf09c683e0c3183baaa3d2f
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/2c4f0317d0cfc194618a7e17ff2481c7
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -287,7 +287,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/3d3cc0c350ad68fbe06ab5f0eec08ccb
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/af8711a4de2dd9214c401f708cd0d63a
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -349,7 +349,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/44674de3c2c78feabe6108cade6c180c
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/a713cc6c8946dd6d445c30dbdef1f4e9
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
