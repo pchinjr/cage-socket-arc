@@ -15,5 +15,7 @@ exports.handler = async function connected(event) {
     console.log('FAIL', e) 
   }
 
+  
+
   return {statusCode: 200}
 }

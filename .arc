@@ -11,6 +11,7 @@ fingerprint true
 
 @http
 get /
+get /connections
 
 @tables
 data

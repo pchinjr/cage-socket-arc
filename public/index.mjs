@@ -7,6 +7,20 @@ let url = window.WS_URL
 let main = document.getElementsByTagName('main')[0]
 let msg = document.getElementById('message')
 
+function init() {
+  fetch('/connections', {
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type':'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then(data => console.log(data))
+  //.then(json => update(json.todos))
+}
+
+init()
+
 // setup the WebSocket
 let ws = new WebSocket(url)
 ws.onopen = open
