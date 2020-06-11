@@ -10,11 +10,16 @@ exports.handler = async function http(req) {
     headers: {'content-type': 'text/html; charset=utf8'},
     body: `<!doctype html>
 <html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+</head> 
 <body>
 <h1>#PraiseCage</h1>
-<h2>We are all connected</h2>
+<button id="leftButton">Left</button>
+<button id="centerButton">Center</button>
+<button id="rightButton">Right</button>
 <main>Loading...</main>
-<input id=message type=text placeholder="Enter message" autofocus>
 <script>
 window.WS_URL = '${getURL()}'
 </script>

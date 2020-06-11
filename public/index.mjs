@@ -5,6 +5,9 @@ let url = window.WS_URL
 
 // all the DOM nodes this script will mutate
 let main = document.getElementsByTagName('main')[0]
+let leftButton = document.getElementById('leftButton')
+let centerButton = document.getElementById('centerButton')
+let rightButton = document.getElementById('rightButton')
 
 // data fetch for active connections to render faces
 function init() {
@@ -29,7 +32,7 @@ function insertFaces(connected) {
 // use connectionIDs to render a face image element with connectionID
 function renderFace(props) {
   return `
-  <img src="/_static/cagepng.png" id=${props.key}/>
+  <img src="/_static/cagepng.png" id=${props.key} class="face" style="transform:rotate(${props.direction}deg)" />
   `
 }
 
@@ -41,7 +44,6 @@ ws.onmessage = message
 
 // connect to the WebSocket
 async function open() { 
-  init() 
   let payload = {
     action: 'connected'
   }
@@ -51,22 +53,46 @@ async function open() {
 
 // report a closed web socket connection
 function close() {
-  main.innerHTML = 'Closed <a href=/>reload</a>'
+  main.innerHTML = `Closed <a href=/>reload</a>`
 }
 
 // write a message into main
 function message(e) {
-  init()
+  // capture event "action"
+  let action = JSON.parse(e.data).action
+
+  if(action === 'connected'||'disconnect') {
+    init()
+  }
+  
+  if(action === 'rotate') {
+    console.log(e)
+    let turnId = JSON.parse(e.data).key
+    let face = document.getElementById(turnId)
+    face.setAttribute('style', `transform: rotate(90deg)`)
+  }
 }
 
-// sends messages to the lambda
-// msg.addEventListener('keyup', function(e) {
-//   if (e.key == 'Enter') {
-//     let text = e.target.value // get the text
-//     console.log(e.target.value)
-//     console.log(typeof(text))
-//     e.target.value = ''       // clear the text
-//     //ws.send({text})
-//     ws.send(JSON.stringify({text}))
-//   }
-// })
+leftButton.addEventListener('click', function(e){
+  let payload = {
+    action: 'rotate',
+    direction: -90
+  }
+  ws.send(JSON.stringify(payload))
+})
+
+centerButton.addEventListener('click', function(e){
+  let payload = {
+    action: 'rotate',
+    direction: 0
+  }
+  ws.send(JSON.stringify(payload))
+})
+
+rightButton.addEventListener('click', function(e){
+  let payload = {
+    action: 'rotate',
+    direction: 90
+  }
+  ws.send(JSON.stringify(payload))
+})
