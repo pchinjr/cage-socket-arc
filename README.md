@@ -62,7 +62,7 @@ data
 profile default
 region us-east-1
 ```
-This information will let us run Sandbox, a local dev server that emulates most of the services that we're going to deploy. If you are curious about what the `.arc` file creates for you, run `arc deploy --dry-run` and it will package everything into a `sam.yaml` that you can inspect before doing an actual deploy. You will notice that each function and service is created with the least amount of IAM privileges. Resources are bound to the app namespace and Architect does the service discovery for you at runtime. `npm start` is a script in `package.json` which starts Architect's Sandbox.
+This information will let us run [Sandbox](https://github.com/architect/sandbox), a local dev server that emulates most of the services that we're going to deploy. If you are curious about what the `.arc` file creates for you, run `arc deploy --dry-run` and it will package everything into a `sam.yaml` that you can inspect before doing an actual deploy. You will notice that each function and service is created with the least amount of IAM privileges. Resources are bound to the app namespace and Architect does the service discovery for you at runtime. `npm start` is a script in `package.json` which starts Architect's Sandbox.
 
 The WebSockets API in the browser also have three events that you can add event handlers to:
 - `ws.onopen`
