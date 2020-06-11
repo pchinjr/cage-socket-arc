@@ -117,8 +117,8 @@ When you decide to deploy this code to AWS, run `arc deploy` from the terminal a
 
 ⚬ Deploy Deploying static assets...
 ⚬ Deploy Deploying static assets...
-[  Uploaded  ] https://cagesocketarcstaging-staticbucket-1q1pidbl1os7s.s3.us-east-1.amazonaws.com/static.json
-[  Uploaded  ] https://cagesocketarcstaging-staticbucket-1q1pidbl1os7s.s3.us-east-1.amazonaws.com/index-069f5b4a5c.mjs
+[  Uploaded  ] https://cagesocketarcstaging-staticbucket-xxxxxxxxxxx.s3.us-east-1.amazonaws.com/static.json
+[  Uploaded  ] https://cagesocketarcstaging-staticbucket-xxxxxxxxxxx.s3.us-east-1.amazonaws.com/index-069f5b4a5c.mjs
 ✓ Deploy Skipped 1 file (already up to date)
 ✓ Success! Deployed static assets from public/
 ```
