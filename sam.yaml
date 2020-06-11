@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Exported by architect/package@1.3.3 on 2020-06-11T00:49:29.773Z
+Description: Exported by architect/package@1.3.3 on 2020-06-11T02:10:59.990Z
 Resources:
   CageSocketArc:
     Type: AWS::Serverless::Api
@@ -20,6 +20,22 @@ Resources:
               x-amazon-apigateway-integration:
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIndex.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: '200'
+                    contentHandling: CONVERT_TO_TEXT
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                contentHandling: CONVERT_TO_TEXT
+                type: aws_proxy
+          /connections:
+            get:
+              responses:
+                '200':
+                  description: 200 response
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetConnections.Arn}/invocations
                 responses:
                   default:
                     statusCode: '200'
@@ -82,7 +98,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/4701fdb3388712b802db47f0c26ceda5
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/e0b347af9f74b200429e5d9369be5127
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -112,6 +128,43 @@ Resources:
           Type: Api
           Properties:
             Path: /
+            Method: GET
+            RestApiId:
+              Ref: CageSocketArc
+  GetConnections:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/f840388d262404cb94b3652b7619e86f
+      Runtime: nodejs12.x
+      MemorySize: 1152
+      Timeout: 5
+      Environment:
+        Variables:
+          ARC_ROLE:
+            Ref: Role
+          ARC_CLOUDFORMATION:
+            Ref: AWS::StackName
+          ARC_APP_NAME: cage-socket-arc
+          ARC_HTTP: aws_proxy
+          NODE_ENV: staging
+          SESSION_TABLE_NAME: jwe
+          ARC_STATIC_BUCKET:
+            Ref: StaticBucket
+          ARC_WSS_URL:
+            Fn::Sub:
+            - wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging
+            - {}
+      Role:
+        Fn::Sub:
+        - arn:aws:iam::${AWS::AccountId}:role/${roleName}
+        - roleName:
+            Ref: Role
+      Events:
+        GetConnectionsEvent:
+          Type: Api
+          Properties:
+            Path: /connections
             Method: GET
             RestApiId:
               Ref: CageSocketArc
@@ -172,7 +225,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/799ec1979fba55eabe55ab47b6edfe11
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/9201ca9c668b86709ab4f77a9f9ddb70
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -234,7 +287,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/687c92a2ff39fc7a6a584b537e12d770
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/adbf82f3af5f4cb0823520d43610b736
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5
@@ -296,7 +349,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/a671880f9776e5bd3a1d374631d4e0b0
+      CodeUri: s3://cage-socket-arc-cfn-deployments-80b66/103d574d3a848370833c9e500bf27c42
       Runtime: nodejs12.x
       MemorySize: 1152
       Timeout: 5

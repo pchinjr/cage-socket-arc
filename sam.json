@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Transform": "AWS::Serverless-2016-10-31",
-  "Description": "Exported by architect/package@1.3.3 on 2020-06-11T00:49:29.773Z",
+  "Description": "Exported by architect/package@1.3.3 on 2020-06-11T02:10:59.990Z",
   "Resources": {
     "CageSocketArc": {
       "Type": "AWS::Serverless::Api",
@@ -25,6 +25,30 @@
                 "x-amazon-apigateway-integration": {
                   "uri": {
                     "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIndex.Arn}/invocations"
+                  },
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "contentHandling": "CONVERT_TO_TEXT"
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "contentHandling": "CONVERT_TO_TEXT",
+                  "type": "aws_proxy"
+                }
+              }
+            },
+            "/connections": {
+              "get": {
+                "responses": {
+                  "200": {
+                    "description": "200 response"
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetConnections.Arn}/invocations"
                   },
                   "responses": {
                     "default": {
@@ -167,6 +191,61 @@
             "Type": "Api",
             "Properties": {
               "Path": "/",
+              "Method": "GET",
+              "RestApiId": {
+                "Ref": "CageSocketArc"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetConnections": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "./src/http/get-connections",
+        "Runtime": "nodejs12.x",
+        "MemorySize": 1152,
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_APP_NAME": "cage-socket-arc",
+            "ARC_HTTP": "aws_proxy",
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            },
+            "ARC_WSS_URL": {
+              "Fn::Sub": [
+                "wss://${WS}.execute-api.${AWS::Region}.amazonaws.com/staging",
+                {}
+              ]
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetConnectionsEvent": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/connections",
               "Method": "GET",
               "RestApiId": {
                 "Ref": "CageSocketArc"

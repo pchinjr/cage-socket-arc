@@ -3,22 +3,26 @@ let data = require('@begin/data')
 
 exports.handler = async function connected(event) {
 
-  console.log(`event object on ws:default - ${JSON.stringify(event.body)}`)
-
-  let id = event.requestContext.connectionId
-  
-  let message = JSON.parse(event.body)
-  
-  let payload = {ok: true, ts: Date.now(), message}
-
+  let id = event.requestContext.connectionId  
+  let action = JSON.parse(event.body).action
   let connected = await data.get({table: 'connected'})
-  console.log(connected)
-  await Promise.all(connected.map(c=> {
-    return arc.ws.send({
-      id: c.key, 
-      payload: payload
-    }, console.log('message sent'))
-  }))
+  let payload = {key: id, ts: Date.now(), action}
+
+  // 
+  if(action === 'connected') {
+    await Promise.all(connected.map(c=> {
+      return arc.ws.send({
+        id: c.key, 
+        payload: payload
+      }, console.log('new connection sent'))
+    }))
+  }
+  
+  
+
+  
+  
+  
 
   return {statusCode: 200}
 }
