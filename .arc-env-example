@@ -1,3 +1,6 @@
+@testing
+WSS_LOCAL ws://localhost:3333
+
 @staging
 WSS_STAGING wss://xxxxxxxx.execute-api.us-east-1.amazonaws.com/staging
 

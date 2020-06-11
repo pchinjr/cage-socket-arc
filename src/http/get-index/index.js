@@ -13,7 +13,8 @@ exports.handler = async function http(req) {
 <meta name="viewport" content="width=device-width">
 </head> 
 <body>
-<h1>#PraiseCage</h1>
+<h1>#PraiseCage Face|On</h1>
+<p><a href="https://github.com/pchinjr/cage-socket-arc">Source on GitHub</a></p>
 <button id="leftButton">Left</button>
 <button id="centerButton">Center</button>
 <button id="rightButton">Right</button>
