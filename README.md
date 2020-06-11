@@ -62,25 +62,34 @@ data
 profile default
 region us-east-1
 ```
+
+## working locally
 This information will let us run [Sandbox](https://github.com/architect/sandbox), a local dev server that emulates most of the services that we're going to deploy. If you are curious about what the `.arc` file creates for you, run `arc deploy --dry-run` and it will package everything into a `sam.yaml` that you can inspect before doing an actual deploy. You will notice that each function and service is created with the least amount of IAM privileges. Resources are bound to the app namespace and Architect does the service discovery for you at runtime. `npm start` is a script in `package.json` which starts Architect's Sandbox.
 
+## WebSockets API
 The WebSockets API in the browser also have three events that you can add event handlers to:
 - `ws.onopen`
 - `ws.onclose`
 - `ws.onmessage`
 
+## http/get-index
 When a client first makes a request to the index route, the `src/http/get-index` handler is invoked and returns an HTML string of the DOM layout and serves the client-side JavaScript bundle from an S3 bucket that is set to serve public assets.
 
+## ws/connect
 The page will load and start to initiate a WebSocket connection. When the connection request starts, a connectionId is passed to `src/ws/connect/index.js`, the `$connect` Lambda function handler. It will save the connectionId to Dynamo and return HTTP status 200 to upgrade the connection from HTTP to WSS. 
 
+## http/get-connections
 Once the connection upgrade is complete, the client-side JS will fetch all connections from a GET endpoint, `src/http/get-connections/index.js` and update the DOM with an image and set the unique ID based on all known `connectionId`s in the database. If there is a direction attribute, it will also grab those to set the initial client state.
 
+## ws/default
 A connection event is also sent over the socket connection to `src/ws/default/index.js`, the `$default` Lambda function handler, to trigger a new push of connections to existing clients. 
 
 A message event is a button press to indicate a change in direction for the given `connectionId`. The change message is sent to `src/ws/default/index.js`, the $default Lambda function handler, where the database is updated and pushes another state change to every client.
 
+## ws/disconnect
 The disconnect event sends a message to `src/ws/disconnect/index.js`, the $disconnect handler, where the connectionId is removed from the database and pushes the new state to the clients.
 
+## deploying
 When you decide to deploy this code to AWS, run `arc deploy` from the terminal and make note of the WebSocket URL that is printed out in the console.
 
 ```bash
@@ -122,7 +131,6 @@ When you decide to deploy this code to AWS, run `arc deploy` from the terminal a
 ✓ Deploy Skipped 1 file (already up to date)
 ✓ Success! Deployed static assets from public/
 ```
-You will need the `WS:` url to update `src/http/get-index/get-websocket-url.js` with the proper WebSocket endpoint for `staging` and `production`. You can choose to either hardcode it in this file or set it as an environment variable in `.arc-env`. See `arc-env-example` for how to set the key value pair. Just make sure to rename it to `.arc-env` and don't commit it to GitHub.
 
 To deploy to production, run `arc deploy production`.
 
