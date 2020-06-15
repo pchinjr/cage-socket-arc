@@ -267,6 +267,7 @@ npm init -y
 npm install @architect/functions @begin/data
 ```
 ```js
+// src/ws/default/index.js
 let arc = require('@architect/functions')
 let data = require('@begin/data')
 
@@ -318,6 +319,7 @@ npm init -y
 npm install @architect/functions @begin/data
 ```
 ```js
+// src/ws/disconnect/index.js
 let data = require('@begin/data')
 let arc = require('@architect/functions')
 

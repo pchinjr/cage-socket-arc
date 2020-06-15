@@ -1,4 +1,4 @@
-# Cage Socket - 2020 - Connection Makes Us Stronger
+# Cage Socket - 2020
 
 This is an interactive demo of serverless WebSockets using [OpenJS Architect](https://arc.codes), AWS API Gateway, DynamoDB, S3, and Lambda functions. [In December 2018, AWS announced that API Gateway had the ability to create WebSocket connections.](https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/) 
 
